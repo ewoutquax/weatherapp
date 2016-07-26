@@ -38,6 +38,7 @@ group :test do
   gem 'spring-commands-rspec'
   gem 'factory_girl_rails'
   gem 'webmock'
+  gem 'vcr'
   gem 'database_cleaner'
   gem 'timecop'
 
