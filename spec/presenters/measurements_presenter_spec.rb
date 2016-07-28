@@ -19,30 +19,40 @@ RSpec.describe MeasurementsPresenter do
 
   context 'noon-marks' do
     it 'are not set, when the measumerement-times do not pass a noon' do
-      measumerement_1 = Measurement.new(measured_at: Time.parse('10:00'))
-      measumerement_2 = Measurement.new(measured_at: Time.parse('11:00'))
+      measured_ats = [
+        Time.parse('10:00'),
+        Time.parse('11:00')
+      ]
 
-      presenter = MeasurementsPresenter.new([measumerement_1, measumerement_2])
-
-      expect(presenter.noon_marks).to eq([])
+      assert_noons_for_measurements(measured_ats, [])
     end
 
     it 'returns the value of 50, when the noon is in the middle' do
-      measumerement_1 = Measurement.new(measured_at: Time.parse('11:00'))
-      measumerement_2 = Measurement.new(measured_at: Time.parse('13:00'))
+      measured_ats = [
+        Time.parse('11:00'),
+        Time.parse('13:00')
+      ]
 
-      presenter = MeasurementsPresenter.new([measumerement_1, measumerement_2])
-
-      expect(presenter.noon_marks).to eq([50.0])
+      assert_noons_for_measurements(measured_ats, [50.0])
     end
 
     it 'returns the value of 10, 50 and 90, when multiple noons are present' do
-      measumerement_1 = Measurement.new(measured_at: Time.parse('6:00') - 1.day)
-      measumerement_2 = Measurement.new(measured_at: Time.parse('18:00') + 1.day)
+      measured_ats = [
+        Time.parse('6:00') - 1.day,
+        Time.parse('18:00') + 1.day
+      ]
 
-      presenter = MeasurementsPresenter.new([measumerement_1, measumerement_2])
+      assert_noons_for_measurements(measured_ats, [10.0, 50.0, 90.0])
+    end
 
-      expect(presenter.noon_marks).to eq([10.0, 50.0, 90.0])
+    def assert_noons_for_measurements(measured_ats, expected_result)
+      measurements = measured_ats.inject([]) do |collection, measured_at|
+        collection << Measurement.new(measured_at: measured_at)
+      end
+
+      presenter = MeasurementsPresenter.new(measurements)
+
+      expect(presenter.noon_marks).to eq(expected_result)
     end
   end
 
@@ -53,15 +63,17 @@ RSpec.describe MeasurementsPresenter do
     after do
       Timecop.return
     end
+
     it 'is on the same day, if the reference-epoch is in the morning' do
-      reference_epoch = Time.parse('9:00').to_i
-      noon = MeasurementsPresenter.next_noon_after_epoch(reference_epoch)
-      expect(noon).to eq(1469700000) # 2016-07-28 12:00:00 +0200
+      assert_next_noon_epoch(Time.parse('9:00').to_i, 1469700000) # 2016-07-28 12:00:00 +0200
     end
     it 'is on the next day, if the reference-epoch is in the afternoon' do
-      reference_epoch = Time.parse('15:00').to_i
+      assert_next_noon_epoch(Time.parse('15:00').to_i, 1469786400) # 2016-07-29 12:00:00 +0200
+    end
+
+    def assert_next_noon_epoch(reference_epoch, expected_noon_epoch)
       noon = MeasurementsPresenter.next_noon_after_epoch(reference_epoch)
-      expect(noon).to eq(1469786400) # 2016-07-29 12:00:00 +0200
+      expect(noon).to eq(expected_noon_epoch)
     end
   end
 end
