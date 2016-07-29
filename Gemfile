@@ -21,13 +21,14 @@ gem 'jbuilder', '~> 2.5'
 
 group :development do
   gem 'better_errors'
-  gem 'listen', '~> 3.0.5'
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 group :development, :test do
   gem 'pry'
   gem 'binding_of_caller'
+
+  gem 'listen', '~> 3.0.5'
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 group :test do
@@ -44,4 +45,6 @@ group :test do
 
   gem 'launchy'
   gem 'simplecov'
+
+  gem 'rspec_summary_notify', path: '/srv/ror/rspec_summary_notify'
 end

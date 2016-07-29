@@ -1,0 +1,10 @@
+<script type="text/javascript">
+  window.temperatureMarks = [
+    <% @presenter.temperature_marks.each do |mark| -%>
+      {
+        x: <%= mark[0] -%>,
+        y: <%= mark[1] -%>
+      },
+    <% end %>
+  ];
+</script>
