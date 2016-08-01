@@ -6,10 +6,12 @@ module Collector
     end
 
     def invoke
+      data = Adafruit::SensorReader.invoke
+
       @measurement.assign_attributes(
-        temperature: 27.1,
-        pressure:    108000,
-        humidity:    64
+        temperature: data[:temperature],
+        pressure:    data[:pressure],
+        humidity:    data[:humidity]
       )
     end
   end

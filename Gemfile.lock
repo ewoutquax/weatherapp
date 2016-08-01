@@ -1,8 +1,3 @@
-PATH
-  remote: /srv/ror/rspec_summary_notify
-  specs:
-    rspec_summary_notify (0.1.0)
-
 GEM
   remote: https://rubygems.org/
   specs:

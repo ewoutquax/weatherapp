@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160727145541) do
+ActiveRecord::Schema.define(version: 20160801184747) do
 
   create_table "measurements", force: :cascade do |t|
     t.datetime "measured_at"
     t.decimal  "temperature"
     t.integer  "pressure"
-    t.integer  "humidity"
+    t.decimal  "humidity"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

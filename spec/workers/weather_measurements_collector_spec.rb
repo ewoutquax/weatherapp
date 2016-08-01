@@ -16,6 +16,8 @@ RSpec.describe Workers::WeatherMeasurementsCollector do
 
   context 'invoke' do
     before do
+      data = {temperature: 27.1, pressure: 108000, humidity: 64.4}
+      expect(Adafruit::SensorReader).to receive(:invoke).and_return(data)
       Workers::WeatherMeasurementsCollector.invoke
     end
 
@@ -27,7 +29,7 @@ RSpec.describe Workers::WeatherMeasurementsCollector do
       measurement = Measurement.last
       expect(measurement.temperature).to eq(27.1)
       expect(measurement.pressure).to eq(108000)
-      expect(measurement.humidity).to eq(64)
+      expect(measurement.humidity.to_f).to eq(64.4)
     end
   end
 end
