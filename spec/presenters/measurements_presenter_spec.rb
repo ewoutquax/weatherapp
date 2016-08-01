@@ -35,11 +35,11 @@ RSpec.describe MeasurementsPresenter do
 
     context 'scales' do
       it 'sets a scale for 0, and for the max-temperature' do
-        assert_scales_for_temperatures([3.1], [0.0, 31.0])
+        assert_scales_for_temperatures([3.1], [[0.0, '0,0'], [31.0, '3,1']])
       end
 
       it 'add a scale for each multiple of 5' do
-        assert_scales_for_temperatures([18.1], [0.0, 25.11, 50.23, 75.34, 90.91])
+        assert_scales_for_temperatures([18.1], [[0.0, "0,0"], [25.11, "5,0"], [50.23, "10,0"], [75.34, "15,0"], [90.91, "18,1"]])
       end
 
       def assert_scales_for_temperatures(temperatures, expected_scales)
@@ -66,6 +66,13 @@ RSpec.describe MeasurementsPresenter do
   end
 
   context 'noon-marks' do
+    before do
+      Timecop.travel(Date.parse('2016-07-29'))
+    end
+    after do
+      Timecop.return
+    end
+
     it 'are not set, when the measumerement-times do not pass a noon' do
       measured_ats = [
         Time.parse('10:00'),
@@ -81,7 +88,7 @@ RSpec.describe MeasurementsPresenter do
         Time.parse('13:00')
       ]
 
-      assert_noons_for_measurements(measured_ats, [50.0])
+      assert_noons_for_measurements(measured_ats, [[50.0, '29-07-2016']])
     end
 
     it 'returns the value of 10, 50 and 90, when multiple noons are present' do
@@ -90,7 +97,7 @@ RSpec.describe MeasurementsPresenter do
         Time.parse('18:00') + 1.day
       ]
 
-      assert_noons_for_measurements(measured_ats, [10.0, 50.0, 90.0])
+      assert_noons_for_measurements(measured_ats, [[10.0, "28-07-2016"], [50.0, "29-07-2016"], [90.0, "30-07-2016"]])
     end
 
     def assert_noons_for_measurements(measured_ats, expected_result)

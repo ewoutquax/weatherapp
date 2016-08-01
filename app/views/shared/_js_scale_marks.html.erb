@@ -1,7 +1,7 @@
 <script type="text/javascript">
   window.temperatureScaleMarks = [
     <% @presenter.temperature_scales.each do |scale| -%>
-      <%= scale -%>,
+      <%= raw scale -%>,
     <% end %>
   ];
 </script>

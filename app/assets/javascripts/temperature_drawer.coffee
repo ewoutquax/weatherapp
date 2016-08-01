@@ -10,19 +10,23 @@ class @TemperatureDrawer
     window.addEventListener('resize', @drawChartAndNoons, false)
 
   drawChartAndNoons: =>
-    @width = @container.width()
+    @width = @container.width() - 35
 
+    @removeLegends()
     @drawChart()
     @drawNoons()
     @drawScales()
+
+  removeLegends: ->
+    @container.find('span').remove()
 
   drawChart: ->
     @canvas.width   = @width
     @canvas.height  = HEIGHT
 
     @context.lineWidth   = 2
-    @context.strokeStyle = '#666666'
-    @context.fillStyle   = '#eeeeee'
+    @context.strokeStyle = '#72D372'
+    @context.fillStyle   = '#E0FFE0'
 
     @context.beginPath()
     @context.moveTo(@width, HEIGHT)
@@ -42,11 +46,18 @@ class @TemperatureDrawer
     @context.strokeStyle = '#aaaaaa'
 
     $.each(@noons, (idx, noon) =>
-      x = (@width / 100 * noon)
+      x = (@width / 100 * noon[0])
       @context.beginPath()
       @context.moveTo(x, 0)
       @context.lineTo(x, HEIGHT)
       @context.stroke()
+
+      span = $('<span>')
+      span.append(noon[1])
+      span.css('right', "#{@width - @width * noon[0] / 100}px")
+      span.css('bottom', '-25px')
+      span.css('transform', 'rotate(315deg)')
+      @container.append(span)
     )
 
   drawScales: ->
@@ -54,9 +65,15 @@ class @TemperatureDrawer
     @context.strokeStyle = '#aaaaaa'
 
     $.each(@scales, (idx, scale) =>
-      y = HEIGHT - (HEIGHT / 100 * scale)
+      y = HEIGHT - (HEIGHT / 100 * scale[0])
       @context.beginPath()
       @context.moveTo(0, y)
       @context.lineTo(@width, y)
       @context.stroke()
+
+      span = $('<span>')
+      span.append(scale[1])
+      span.css('left', '0')
+      span.css('bottom', "#{scale[0]}%")
+      @container.append(span)
     )

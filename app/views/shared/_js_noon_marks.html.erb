@@ -1,7 +1,7 @@
 <script type="text/javascript">
   window.noonMarks = [
     <% @presenter.noon_marks.each do |mark| -%>
-      <%= mark -%>,
+      [<%= mark[0] -%>, '<%= raw mark[1] -%>'],
     <% end %>
   ];
 </script>

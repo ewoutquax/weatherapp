@@ -21,11 +21,15 @@ class MeasurementsPresenter
     scale   = []
     current = 0
     while current < max
-      scale << (current * 100.0 / max_height_for_temperature).to_f.round(2)
+      height_percentage = (current * 100.0 / max_height_for_temperature).to_f.round(2)
+      temperature = current.to_f.to_s.gsub('.',',')
+      scale << [height_percentage, temperature]
       current += 5
     end
 
-    scale << (max * 100.0 / max_height_for_temperature).to_f.round(2)
+    height_percentage = (max * 100.0 / max_height_for_temperature).to_f.round(2)
+    temperature = max.to_f.to_s.gsub('.',',')
+    scale << [height_percentage, temperature]
   end
 
   def noon_marks
@@ -33,7 +37,9 @@ class MeasurementsPresenter
 
     marks = []
     while noon_epoch < epoch_max
-      marks << (noon_epoch - epoch_min) * 100.0 / width_range
+      x = (noon_epoch - epoch_min) * 100.0 / width_range
+      date = Time.at(noon_epoch).strftime('%d-%m-%Y')
+      marks << [x, date]
       noon_epoch += 86400
     end
 
@@ -50,6 +56,14 @@ class MeasurementsPresenter
       end
     end
 
+    def max_height_for_pressure
+      (max_pressure * 1.1).round
+    end
+
+    def min_height_for_pressure
+      (min_pressure / 10000).floor * 10000
+    end
+
     def max_temperature
       max = 0
       @measurements.each do |measurement|
@@ -58,6 +72,26 @@ class MeasurementsPresenter
         end
       end
       max
+    end
+
+    def max_pressure
+      max = 0
+      @measurements.each do |measurement|
+        if max < measurement.pressure
+          max = measurement.pressure
+        end
+      end
+      max
+    end
+
+    def min_pressure
+      min = @measurements.first.pressure
+      @measurements.each do |measurement|
+        if min > measurement.pressure
+          min = measurement.pressure
+        end
+      end
+      min
     end
 
     def width_range
