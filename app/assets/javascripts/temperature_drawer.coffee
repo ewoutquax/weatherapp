@@ -13,9 +13,9 @@ class @TemperatureDrawer
     @width = @container.width() - 35
 
     @removeLegends()
-    @drawChart()
     @drawNoons()
     @drawScales()
+    @drawChart()
 
   removeLegends: ->
     @container.find('span').remove()
