@@ -19,6 +19,9 @@ gem 'slim-rails'
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'jbuilder', '~> 2.5'
 
+# Cronjobs
+gem 'whenever'
+
 group :development do
   gem 'better_errors'
 end
@@ -45,6 +48,4 @@ group :test do
 
   gem 'launchy'
   gem 'simplecov'
-
-  gem 'rspec_summary_notify', path: '/srv/ror/rspec_summary_notify'
 end
