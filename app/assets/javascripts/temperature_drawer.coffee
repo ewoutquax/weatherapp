@@ -7,7 +7,7 @@ class @TemperatureDrawer
 
   drawChartOnResize: ->
     @drawChartAndNoons()
-    window.addEventListener('resize', @drawChartAndNoons, false)
+    @container.get(0).addEventListener('resize', @drawChartAndNoons, true)
 
   drawChartAndNoons: =>
     @width = @container.width() - 35

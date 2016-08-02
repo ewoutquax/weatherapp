@@ -51,7 +51,7 @@ class MeasurementsPresenter
     while current < max_pressure
       height = ((current - min_height_for_pressure) * 95.0 / height_range_for_pressure).round(2) + 5.0
       scale << [height, current]
-      current += 10000
+      current += 100
     end
 
     height = ((max_pressure - min_height_for_pressure) * 95.0 / height_range_for_pressure).round(2) + 5.0
@@ -91,7 +91,7 @@ class MeasurementsPresenter
     end
 
     def min_height_for_pressure
-      (min_pressure / 10000).floor * 10000
+      (min_pressure / 100).floor * 100
     end
 
     def max_temperature

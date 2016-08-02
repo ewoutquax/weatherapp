@@ -1,12 +1,21 @@
-h1 My WeatherApp
+.row
+  .col-xs-12
+    #accordion.panel-group
+      .panel.panel-default
+        .panel-heading
+          h2.panel-title
+            a[data-toggle="collapse" data-parent="#accordion" href="#temperature"] Temperatures
+        #temperature.panel-collapse.collapse
+          .panel-body
+            canvas
 
-h2 Temperatures
-div#temperature
-  canvas
-
-h2 Pressure
-div#pressure
-  canvas
+      .panel.panel-default
+        .panel-heading
+          h2.panel-title
+            a[data-toggle="collapse" data-parent="#accordion" href="#pressure"] Pressure
+        #pressure.panel-collapse.collapse
+          .panel-body
+            canvas
 
 = render 'shared/js_noon_marks'
 = render 'shared/js_temperature_marks'

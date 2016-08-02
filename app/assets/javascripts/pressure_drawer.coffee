@@ -24,8 +24,8 @@ class @PressureDrawer
 
   drawChart: ->
     @context.lineWidth   = 2
-    @context.strokeStyle = '#72D372'
-    @context.fillStyle   = '#E0FFE0'
+    @context.strokeStyle = '#D372D3'
+    @context.fillStyle   = '#FFE0FF'
 
     @context.beginPath()
     @context.moveTo(@width, HEIGHT)
