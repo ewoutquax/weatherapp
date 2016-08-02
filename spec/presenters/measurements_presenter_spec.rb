@@ -67,32 +67,32 @@ RSpec.describe MeasurementsPresenter do
 
   context 'pressure' do
     let(:pressure_1) { Measurement.new(measured_at: Time.parse('7:00'), pressure: 108000) }
-    let(:pressure_2) { Measurement.new(measured_at: Time.parse('8:00'), pressure: 115000) }
-    let(:pressure_3) { Measurement.new(measured_at: Time.parse('9:00'), pressure: 108000) }
+    let(:pressure_2) { Measurement.new(measured_at: Time.parse('8:00'), pressure: 111030) }
+    let(:pressure_3) { Measurement.new(measured_at: Time.parse('9:00'), pressure: 110000) }
 
     context 'min height' do
-      it 'sets the min-height at multiple of 10000 below the lowest pressure' do
+      it 'sets the min-height at multiple of 100 below the lowest pressure' do
         min_height = MeasurementsPresenter.new([pressure_1, pressure_2]).send(:min_height_for_pressure)
-        expect(min_height).to eq(100000)
+        expect(min_height).to eq(108000)
       end
     end
 
     context 'max height' do
       it 'sets the max-height at 110% of the pressure-range adding the height-offset' do
         max_height = MeasurementsPresenter.new([pressure_1, pressure_2]).send(:max_height_for_pressure)
-        expect(max_height).to eq(116500)
+        expect(max_height).to eq(111333)
       end
     end
 
     context 'scales' do
       it 'sets a scale for 0, the min-height and the max-pressure' do
-        scales = MeasurementsPresenter.new([pressure_1]).scales_for_pressures
+        scales = MeasurementsPresenter.new([pressure_1]).pressure_scales
 
         expect(scales).to eq([[0, 0], [5.0, 100000], [91.36, 108000]])
       end
 
       it 'add a scale for each multiple of 10000' do
-        scales = MeasurementsPresenter.new([pressure_1, pressure_2]).scales_for_pressures
+        scales = MeasurementsPresenter.new([pressure_1, pressure_2]).pressure_scales
 
         expect(scales).to eq([[0, 0], [5.0, 100000], [62.58, 110000], [91.36, 115000]])
       end
@@ -103,7 +103,50 @@ RSpec.describe MeasurementsPresenter do
         presenter = MeasurementsPresenter.new([pressure_1, pressure_2, pressure_3])
         marks = presenter.pressure_marks
 
-        expect(marks).to eq([[0.0, 51.06], [50.0, 91.36], [100.0, 51.06]])
+        expect(marks).to eq([[0.0, 5.0], [50.0, 91.36], [100.0, 62.01]])
+      end
+    end
+  end
+
+  context 'humidity' do
+    let(:humidity_1) { Measurement.new(measured_at: Time.parse('7:00'), humidity: 52.0) }
+    let(:humidity_2) { Measurement.new(measured_at: Time.parse('8:00'), humidity: 56.1) }
+    let(:humidity_3) { Measurement.new(measured_at: Time.parse('9:00'), humidity: 66.2) }
+
+    context 'min height' do
+      it 'sets the min-height at multiple of 5 below the lowest pressure' do
+        min_height = MeasurementsPresenter.new([humidity_1, humidity_2]).send(:min_height_for_humidity)
+        expect(min_height).to eq(50.0)
+      end
+    end
+
+    context 'max height' do
+      it 'sets the max-height at 110% of the humidity-range adding the height-offset' do
+        max_height = MeasurementsPresenter.new([humidity_1, humidity_2]).send(:max_height_for_humidity)
+        expect(max_height).to eq(56.7)
+      end
+    end
+
+    context 'scales' do
+      it 'sets a scale for 0, the min-height and the max-humidity' do
+        scales = MeasurementsPresenter.new([humidity_1]).humidity_scales
+
+        expect(scales).to eq([[0, 0], [5.0, 50.0], [91.36, 52.0]])
+      end
+
+      it 'add a scale for each multiple of 5' do
+        scales = MeasurementsPresenter.new([humidity_1, humidity_2]).humidity_scales
+
+        expect(scales).to eq([[0, 0], [5.0, 50.0], [75.9, 55.0], [91.49, 56.1]])
+      end
+    end
+
+    context 'humidity-marks' do
+      it 'returns the x- and y-coordinates for the humidities' do
+        presenter = MeasurementsPresenter.new([humidity_1, humidity_2, humidity_3])
+        marks = presenter.humidity_marks
+
+        expect(marks).to eq([[0.0, 15.67], [50.0, 37.56], [100.0, 91.46]])
       end
     end
   end

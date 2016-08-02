@@ -1,0 +1,10 @@
+<script type="text/javascript">
+  window.humidityMarks = [
+    <% @presenter.humidity_marks.each do |mark| -%>
+      {
+        x: <%= mark[0] -%>,
+        y: <%= mark[1] -%>
+      },
+    <% end %>
+  ];
+</script>

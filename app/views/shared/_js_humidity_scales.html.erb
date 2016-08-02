@@ -1,0 +1,7 @@
+<script type="text/javascript">
+  window.humidityScaleMarks = [
+    <% @presenter.humidity_scales.each do |scale| -%>
+      <%= raw scale -%>,
+    <% end %>
+  ];
+</script>

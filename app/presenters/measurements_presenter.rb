@@ -27,6 +27,18 @@ class MeasurementsPresenter
     marks
   end
 
+  def humidity_marks
+    marks = []
+    @measurements.each do |measurement|
+      next if measurement.humidity.blank?
+
+      x = (measurement.measured_at.to_i - epoch_min) * 100.0 / width_range
+      y = ((measurement.humidity.to_f - min_height_for_humidity) * 95.0 / height_range_for_humidity).round(2) + 5.0
+      marks << [x, y]
+    end
+    marks
+  end
+
   def temperature_scales
     max = max_temperature
 
@@ -56,6 +68,20 @@ class MeasurementsPresenter
 
     height = ((max_pressure - min_height_for_pressure) * 95.0 / height_range_for_pressure).round(2) + 5.0
     scale << [height, max_pressure]
+  end
+
+  def humidity_scales
+    scale = [[0, 0]]
+
+    current = min_height_for_humidity
+    while current < max_humidity
+      height = ((current - min_height_for_humidity) * 95.0 / height_range_for_humidity).to_f.round(2) + 5.0
+      scale << [height, current]
+      current += 5
+    end
+
+    height = ((max_humidity - min_height_for_humidity) * 95.0 / height_range_for_humidity).to_f.round(2) + 5.0
+    scale << [height, max_humidity]
   end
 
   def noon_marks
@@ -104,6 +130,26 @@ class MeasurementsPresenter
 
     def min_pressure
       @measurements.map(&:pressure).reject(&:nil?).min
+    end
+
+    def height_range_for_humidity
+      max_height_for_humidity - min_height_for_humidity
+    end
+
+    def max_height_for_humidity
+      ((max_humidity - min_height_for_humidity) * 1.1 + min_height_for_humidity).round(1)
+    end
+
+    def min_height_for_humidity
+      (min_humidity / 5).floor.to_f * 5
+    end
+
+    def max_humidity
+      @measurements.map(&:humidity).reject(&:nil?).max.to_f
+    end
+
+    def min_humidity
+      @measurements.map(&:humidity).reject(&:nil?).min.to_f
     end
 
     def width_range
