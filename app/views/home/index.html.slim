@@ -1,4 +1,10 @@
 .row
+  .col-xs-3
+    .well
+      h4>
+        ' Laatste meting:
+        strong= @measurements.last.measured_at.strftime('%d %b %H:%M')
+.row
   .col-xs-12
     #accordion.panel-group
       .panel.panel-default

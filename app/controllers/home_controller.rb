@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @presenter = MeasurementsPresenter.new(Measurement.order(:measured_at).to_a)
+    @measurements = Measurement.order(:measured_at)
+    @presenter = MeasurementsPresenter.new(@measurements.to_a)
   end
 end
