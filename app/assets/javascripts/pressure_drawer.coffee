@@ -1,4 +1,4 @@
-class @TemperatureDrawer
+class @PressureDrawer
   HEIGHT = 200
 
   constructor: (@container, @measurements, @noons, @scales) ->

@@ -65,6 +65,49 @@ RSpec.describe MeasurementsPresenter do
     end
   end
 
+  context 'pressure' do
+    let(:pressure_1) { Measurement.new(measured_at: Time.parse('7:00'), pressure: 108000) }
+    let(:pressure_2) { Measurement.new(measured_at: Time.parse('8:00'), pressure: 115000) }
+    let(:pressure_3) { Measurement.new(measured_at: Time.parse('9:00'), pressure: 108000) }
+
+    context 'min height' do
+      it 'sets the min-height at multiple of 10000 below the lowest pressure' do
+        min_height = MeasurementsPresenter.new([pressure_1, pressure_2]).send(:min_height_for_pressure)
+        expect(min_height).to eq(100000)
+      end
+    end
+
+    context 'max height' do
+      it 'sets the max-height at 110% of the pressure-range adding the height-offset' do
+        max_height = MeasurementsPresenter.new([pressure_1, pressure_2]).send(:max_height_for_pressure)
+        expect(max_height).to eq(116500)
+      end
+    end
+
+    context 'scales' do
+      it 'sets a scale for 0, the min-height and the max-pressure' do
+        scales = MeasurementsPresenter.new([pressure_1]).scales_for_pressures
+
+        expect(scales).to eq([[0, 0], [5.0, 100000], [91.36, 108000]])
+      end
+
+      it 'add a scale for each multiple of 10000' do
+        scales = MeasurementsPresenter.new([pressure_1, pressure_2]).scales_for_pressures
+
+        expect(scales).to eq([[0, 0], [5.0, 100000], [62.58, 110000], [91.36, 115000]])
+      end
+    end
+
+    context 'pressure-marks' do
+      it 'returns the x- and y-coordinates for the temperatures' do
+        presenter = MeasurementsPresenter.new([pressure_1, pressure_2, pressure_3])
+        marks = presenter.pressure_marks
+
+        expect(marks).to eq([[0.0, 51.06], [50.0, 91.36], [100.0, 51.06]])
+      end
+    end
+  end
+
   context 'noon-marks' do
     before do
       Timecop.travel(Date.parse('2016-07-29'))

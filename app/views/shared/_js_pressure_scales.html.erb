@@ -1,0 +1,7 @@
+<script type="text/javascript">
+  window.pressureScaleMarks = [
+    <% @presenter.pressure_scales.each do |scale| -%>
+      <%= raw scale -%>,
+    <% end %>
+  ];
+</script>

@@ -15,6 +15,18 @@ class MeasurementsPresenter
     marks
   end
 
+  def pressure_marks
+    marks = []
+    @measurements.each do |measurement|
+      next if measurement.pressure.blank?
+
+      x = (measurement.measured_at.to_i - epoch_min) * 100.0 / width_range
+      y = ((measurement.pressure - min_height_for_pressure) * 95.0 / height_range_for_pressure).round(2) + 5.0
+      marks << [x, y]
+    end
+    marks
+  end
+
   def temperature_scales
     max = max_temperature
 
@@ -30,6 +42,20 @@ class MeasurementsPresenter
     height_percentage = (max * 100.0 / max_height_for_temperature).to_f.round(2)
     temperature = max.to_f.to_s.gsub('.',',')
     scale << [height_percentage, temperature]
+  end
+
+  def pressure_scales
+    scale = [[0, 0]]
+
+    current = min_height_for_pressure
+    while current < max_pressure
+      height = ((current - min_height_for_pressure) * 95.0 / height_range_for_pressure).round(2) + 5.0
+      scale << [height, current]
+      current += 10000
+    end
+
+    height = ((max_pressure - min_height_for_pressure) * 95.0 / height_range_for_pressure).round(2) + 5.0
+    scale << [height, max_pressure]
   end
 
   def noon_marks
@@ -56,8 +82,12 @@ class MeasurementsPresenter
       end
     end
 
+    def height_range_for_pressure
+      max_height_for_pressure - min_height_for_pressure
+    end
+
     def max_height_for_pressure
-      (max_pressure * 1.1).round
+      ((max_pressure - min_height_for_pressure) * 1.1 + min_height_for_pressure).round
     end
 
     def min_height_for_pressure
@@ -65,33 +95,15 @@ class MeasurementsPresenter
     end
 
     def max_temperature
-      max = 0
-      @measurements.each do |measurement|
-        if max < measurement.temperature
-          max = measurement.temperature
-        end
-      end
-      max
+      @measurements.map(&:temperature).reject(&:nil?).max
     end
 
     def max_pressure
-      max = 0
-      @measurements.each do |measurement|
-        if max < measurement.pressure
-          max = measurement.pressure
-        end
-      end
-      max
+      @measurements.map(&:pressure).reject(&:nil?).max
     end
 
     def min_pressure
-      min = @measurements.first.pressure
-      @measurements.each do |measurement|
-        if min > measurement.pressure
-          min = measurement.pressure
-        end
-      end
-      min
+      @measurements.map(&:pressure).reject(&:nil?).min
     end
 
     def width_range
