@@ -61,7 +61,7 @@ class @TemperatureDrawer
 
   drawScales: ->
     @context.lineWidth   = 1
-    @context.strokeStyle = '#aaaaaa'
+    @context.strokeStyle = '#D0D0D0'
 
     $.each(@scales, (idx, scale) =>
       y = HEIGHT - (HEIGHT / 100 * scale[0])

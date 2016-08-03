@@ -62,12 +62,12 @@ class MeasurementsPresenter
     current = min_height_for_pressure
     while current < max_pressure
       height = ((current - min_height_for_pressure) * 95.0 / height_range_for_pressure).round(2) + 5.0
-      scale << [height, current]
+      scale << [height, current / 100]
       current += 100
     end
 
     height = ((max_pressure - min_height_for_pressure) * 95.0 / height_range_for_pressure).round(2) + 5.0
-    scale << [height, max_pressure]
+    scale << [height, max_pressure.to_f / 100]
   end
 
   def humidity_scales

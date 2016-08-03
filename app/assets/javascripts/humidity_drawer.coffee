@@ -24,8 +24,8 @@ class @HumidityDrawer
 
   drawChart: ->
     @context.lineWidth   = 2
-    @context.strokeStyle = '#D372D3'
-    @context.fillStyle   = '#FFE0FF'
+    @context.strokeStyle = '#7272D3'
+    @context.fillStyle   = '#E0E0FF'
 
     @context.beginPath()
     @context.moveTo(@width, HEIGHT)
@@ -61,7 +61,7 @@ class @HumidityDrawer
 
   drawScales: ->
     @context.lineWidth   = 1
-    @context.strokeStyle = '#aaaaaa'
+    @context.strokeStyle = '#D0D0D0'
 
     $.each(@scales, (idx, scale) =>
       y = HEIGHT - (HEIGHT / 100 * scale[0])
