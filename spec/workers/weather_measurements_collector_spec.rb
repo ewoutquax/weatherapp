@@ -16,13 +16,15 @@ RSpec.describe Workers::WeatherMeasurementsCollector do
 
   context 'invoke' do
     before do
-      mock_current_measurement = double('Measurement', save!: true)
-      expect_any_instance_of(Builder::CurrentMeasurement).to receive(:from_measurement)
-      expect_any_instance_of(Builder::CurrentMeasurement).to receive(:current_measurement).and_return(mock_current_measurement)
+      Measurement.create!(is_current_reading: true)
 
       data = {temperature: 27.1, pressure: 108000, humidity: 64.4}
       expect(Adafruit::SensorReader).to receive(:invoke).and_return(data)
       Workers::WeatherMeasurementsCollector.invoke
+    end
+
+    it 'deletes the last current-reading' do
+      expect(Measurement.where(is_current_reading: true).count).to eq(0)
     end
 
     it 'writes a record to the measurements-table' do

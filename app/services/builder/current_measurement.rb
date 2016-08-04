@@ -7,17 +7,6 @@ module Builder
       Collector::WeatherMeasurements.new(@current_measurement).invoke
     end
 
-    def from_measurement(measurement)
-      raise ArgumentError, measurement.class.to_s unless measurement.is_a?(::Measurement)
-
-      @current_measurement = measurement_to_use
-      @current_measurement.assign_attributes(
-        temperature:        measurement.temperature,
-        pressure:           measurement.pressure,
-        humidity:           measurement.humidity
-      )
-    end
-
     private
 
       def measurement_to_use

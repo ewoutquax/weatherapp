@@ -33,15 +33,4 @@ RSpec.describe Builder::CurrentMeasurement do
       end
     end
   end
-
-  context 'from_measurement' do
-    it 'copies the values from the given measurement' do
-      latest_measurement = Measurement.new(temperature: 8.0)
-
-      builder.from_measurement(latest_measurement)
-
-      expect(builder.current_measurement).to_not be(latest_measurement)
-      expect(builder.current_measurement.temperature).to eq(8.0)
-    end
-  end
 end
