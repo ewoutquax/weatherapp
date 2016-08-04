@@ -21,10 +21,12 @@ module Builder
     private
 
       def measurement_to_use
-        Measurement.where(is_current_reading: true).first_or_initialize(
+        m = Measurement.where(is_current_reading: true).first_or_initialize
+        m.assign_attributes(
           measured_at:        Time.now,
           is_current_reading: true
         )
+        m
       end
   end
 end
