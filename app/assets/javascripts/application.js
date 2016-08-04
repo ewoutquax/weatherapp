@@ -16,6 +16,6 @@
 //= require turbolinks
 //= require_tree .
 
-$(document).on('ready page:change', function() {
+$(document).on('ready turbolinks:load', function() {
   (new PageInitializer()).init()
 });
