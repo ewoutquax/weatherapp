@@ -13,6 +13,26 @@
             dd= "#{number_with_precision(@current_measurement.pressure / 100.0, precision: 2, separator: ',')} hP"
             dt Vochtigheidsgraad:
             dd= "#{number_with_precision(@current_measurement.humidity, precision: 1, separator: ',')} %"
+
+      - if @previous_measurement
+        .well
+          h4>
+            ' Vorige reguliere meting:
+            dl.dl-horizontal.small
+              dt Meting gedaan op:
+              dd= @previous_measurement.measured_at.strftime('%d %b %H:%M')
+              dt Temperatuur:
+              dd
+                = raw "#{number_with_precision(@previous_measurement.temperature, precision: 1, separator: ',')} &deg;C"
+                =< raw "(#{number_with_precision((@current_measurement.temperature - @previous_measurement.temperature), precision: 1, separator: ',')} &deg;C)"
+              dt Luchtdruk:
+              dd
+                = "#{number_with_precision(@previous_measurement.pressure / 100.0, precision: 2, separator: ',')} hP"
+                =< "(#{number_with_precision((@current_measurement.pressure - @previous_measurement.pressure) / 100.0, precision: 2, separator: ',')} hP)"
+              dt Vochtigheidsgraad:
+              dd
+                = "#{number_with_precision(@previous_measurement.humidity, precision: 1, separator: ',')} %"
+                =< "(#{number_with_precision((@current_measurement.humidity - @previous_measurement.humidity), precision: 1, separator: ',')} %)"
     - else
       .well.alert-danger
         h4>
