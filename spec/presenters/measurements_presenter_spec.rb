@@ -66,9 +66,9 @@ RSpec.describe MeasurementsPresenter do
   end
 
   context 'pressure' do
-    let(:pressure_1) { Measurement.new(measured_at: Time.parse('7:00'), pressure: 108000) }
-    let(:pressure_2) { Measurement.new(measured_at: Time.parse('8:00'), pressure: 111030) }
-    let(:pressure_3) { Measurement.new(measured_at: Time.parse('9:00'), pressure: 110000) }
+    let(:pressure_1) { Measurement.new(measured_at: Time.parse('7:00'), pressure: 108050) }
+    let(:pressure_2) { Measurement.new(measured_at: Time.parse('8:00'), pressure: 108200) }
+    let(:pressure_3) { Measurement.new(measured_at: Time.parse('9:00'), pressure: 107900) }
 
     context 'min height' do
       it 'sets the min-height at multiple of 100 below the lowest pressure' do
@@ -80,7 +80,7 @@ RSpec.describe MeasurementsPresenter do
     context 'max height' do
       it 'sets the max-height at 110% of the pressure-range adding the height-offset' do
         max_height = MeasurementsPresenter.new([pressure_1, pressure_2]).send(:max_height_for_pressure)
-        expect(max_height).to eq(111333)
+        expect(max_height).to eq(108220)
       end
     end
 
@@ -88,13 +88,13 @@ RSpec.describe MeasurementsPresenter do
       it 'sets a scale for 0, the min-height and the max-pressure' do
         scales = MeasurementsPresenter.new([pressure_1]).pressure_scales
 
-        expect(scales).to eq([[0, 0], [5.0, 100000], [91.36, 108000]])
+        expect(scales).to eq([[0, 0], [5.0, 1080], [91.36, 1080.5]])
       end
 
-      it 'add a scale for each multiple of 10000' do
+      it 'add a scale for each multiple of 100' do
         scales = MeasurementsPresenter.new([pressure_1, pressure_2]).pressure_scales
 
-        expect(scales).to eq([[0, 0], [5.0, 100000], [62.58, 110000], [91.36, 115000]])
+        expect(scales).to eq([[0, 0], [5.0, 1080], [48.18, 1081], [91.36, 1082.0]])
       end
     end
 
@@ -103,7 +103,7 @@ RSpec.describe MeasurementsPresenter do
         presenter = MeasurementsPresenter.new([pressure_1, pressure_2, pressure_3])
         marks = presenter.pressure_marks
 
-        expect(marks).to eq([[0.0, 5.0], [50.0, 91.36], [100.0, 62.01]])
+        expect(marks).to eq([[0.0, 48.18], [50.0, 91.36], [100.0, 5.0]])
       end
     end
   end

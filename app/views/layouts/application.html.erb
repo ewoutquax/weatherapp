@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <%= csrf_meta_tags %>
     <title>Weatherapp</title>
 
@@ -26,6 +26,9 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/">Home</a></li>
+            <li>
+              <%= link_to 'Chart', chart_path -%>
+            </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

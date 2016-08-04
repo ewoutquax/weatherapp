@@ -1,0 +1,40 @@
+.row
+  .col-xs-12.col-md-6
+    .well
+      h4>
+        ' Laatste meting:
+        strong= @measurements.last.measured_at.strftime('%d %b %H:%M')
+.row
+  .col-xs-12
+    #accordion.panel-group
+      .panel.panel-default
+        .panel-heading
+          h2.panel-title
+            a[data-toggle="collapse" data-parent="#accordion" href="#temperature"] Temperatures
+        #temperature.panel-collapse.collapse
+          .panel-body
+            canvas
+
+      .panel.panel-default
+        .panel-heading
+          h2.panel-title
+            a[data-toggle="collapse" data-parent="#accordion" href="#pressure"] Pressure
+        #pressure.panel-collapse.collapse
+          .panel-body
+            canvas
+
+      .panel.panel-default
+        .panel-heading
+          h2.panel-title
+            a[data-toggle="collapse" data-parent="#accordion" href="#humidity"] Humidity
+        #humidity.panel-collapse.collapse
+          .panel-body
+            canvas
+
+= render 'shared/js_noon_marks'
+= render 'shared/js_temperature_marks'
+= render 'shared/js_temperature_scales'
+= render 'shared/js_pressure_marks'
+= render 'shared/js_pressure_scales'
+= render 'shared/js_humidity_marks'
+= render 'shared/js_humidity_scales'
