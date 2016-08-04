@@ -42,5 +42,5 @@ Measurement.create!([
   {measured_at: "2016-08-02 14:00:04", temperature: "20.3", pressure: 101229, humidity: "63.5"},
   {measured_at: "2016-08-02 14:30:04", temperature: "20.1", pressure: 101231, humidity: "65.4"},
   {measured_at: "2016-08-02 15:00:05", temperature: "20.1", pressure: 101216, humidity: "66.2"},
-  {measured_at: "2016-08-02 15:30:04", temperature: "20.4", pressure: 101199, humidity: "68.1"}
+  {measured_at: "2016-08-02 15:30:04", temperature: "20.4", pressure: 101199, humidity: "68.1", is_current_reading: true}
 ])
