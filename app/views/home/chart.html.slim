@@ -1,12 +1,23 @@
 .row
-  .col-xs-12.col-md-6
+  .col-xs-12.col-md-4
     .well
       h4>
-        ' Laatste meting:
+        ' Recenste meting:
         strong= @measurements.last.measured_at.strftime('%d %b %H:%M')
 .row
   .col-xs-12
+    ul.nav.nav-pills
+      li.active
+        = link_to 'Alle metingen', chart_all_readings_path
+      li
+        = link_to 'Afgelopen 36 uur', chart_36_hours_path
+    br/
+    br/
+
+.row
+  .col-xs-12
     #accordion.panel-group
+      h3= @presenter.title
       .panel.panel-default
         .panel-heading
           h2.panel-title

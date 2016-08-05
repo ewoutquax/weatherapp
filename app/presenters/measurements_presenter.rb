@@ -1,8 +1,11 @@
 class MeasurementsPresenter
-  def initialize(measurements)
+  attr_reader :title
+
+  def initialize(measurements, title = '')
     raise ArgumentError, measurements.class.to_s unless measurements.is_a?(Array)
 
     @measurements = measurements
+    @title        = title
   end
 
   def temperature_marks

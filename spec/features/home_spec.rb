@@ -108,7 +108,7 @@ RSpec.feature "Home", type: :feature do
   end
 
   def then_i_see_the_details_of_the_last_measurement
-    expect(page).to have_content('Laatste meting: 01 Aug 18:53')
+    expect(page).to have_content('Recenste meting: 01 Aug 18:53')
   end
 
   def and_i_see_3_charts
