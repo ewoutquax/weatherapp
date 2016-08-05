@@ -7,10 +7,8 @@
 .row
   .col-xs-12
     ul.nav.nav-pills
-      li.active
-        = link_to 'Alle metingen', chart_all_readings_path
-      li
-        = link_to 'Afgelopen 36 uur', chart_36_hours_path
+      = link_to_pill_menu(all_readings_charts_path, 'Alle metingen')
+      = link_to_pill_menu(last_36_hours_charts_path, 'Afgelopen 36 uur')
     br/
     br/
 

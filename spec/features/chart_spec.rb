@@ -15,6 +15,7 @@ RSpec.feature "Chart", type: :feature do
     and_i_click_the_charts_link
     then_i_see_the_details_of_the_last_measurement
     and_i_see_the_header_for_full_overview
+    and_i_see_the_all_measurements_link_as_active
     and_i_see_3_charts
   end
 
@@ -25,6 +26,7 @@ RSpec.feature "Chart", type: :feature do
     and_i_click_36_hours_link
     then_i_see_the_details_of_the_last_measurement
     and_i_see_the_header_for_36_hours
+    and_i_see_the_36_hour_link_as_active
     and_i_see_3_charts
   end
 
@@ -67,6 +69,18 @@ RSpec.feature "Chart", type: :feature do
   def and_i_see_the_header_for_full_overview
     within('.panel-group h3') do
       expect(page).to have_content('Alle metingen')
+    end
+  end
+
+  def and_i_see_the_all_measurements_link_as_active
+    within('.nav-pills li.active') do
+      expect(page).to have_content('Alle metingen')
+    end
+  end
+
+  def and_i_see_the_36_hour_link_as_active
+    within('.nav-pills li.active') do
+      expect(page).to have_content('Afgelopen 36 uur')
     end
   end
 
