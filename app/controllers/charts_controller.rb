@@ -1,11 +1,11 @@
 class ChartsController < ApplicationController
   def index
-    redirect_to last_36_hours_charts_path
+    redirect_to last_48_hours_charts_path
   end
 
-  def last_36_hours
-    @measurements = Measurement.order(:measured_at).where('measured_at > :time', time: Time.now - 36.hours)
-    @presenter    = MeasurementsPresenter.new(@measurements.to_a, 'Afgelopen 36 uur')
+  def last_48_hours
+    @measurements = Measurement.order(:measured_at).where('measured_at > :time', time: Time.now - 48.hours)
+    @presenter    = MeasurementsPresenter.new(@measurements.to_a, 'Afgelopen 48 uur')
     render :show
   end
 

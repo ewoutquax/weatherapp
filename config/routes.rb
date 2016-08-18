@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :charts, only: :index do
     collection do
       get :all_readings
-      get :last_36_hours
+      get :last_48_hours
     end
   end
 end
