@@ -22,6 +22,9 @@ gem 'jbuilder', '~> 2.5'
 # Cronjobs
 gem 'whenever'
 
+# Sunrise and -set
+gem 'ruby-sun-times', require: 'sun_times'
+
 group :development do
   gem 'better_errors'
 end

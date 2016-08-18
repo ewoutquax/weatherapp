@@ -1,0 +1,7 @@
+<script type="text/javascript">
+  window.sunRisesSets = [
+    <% @presenter.sun_rises_sets.each do |rise_set| -%>
+      <%= raw rise_set -%>,
+    <% end %>
+  ];
+</script>

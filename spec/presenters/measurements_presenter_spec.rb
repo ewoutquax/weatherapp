@@ -195,6 +195,51 @@ RSpec.describe MeasurementsPresenter do
     end
   end
 
+  context 'sun rise and set' do
+    before do
+      Timecop.travel(Time.parse('2016-08-07 16:00'))
+    end
+    after do
+      Timecop.return
+    end
+
+    it 'are not set, when the measumerement-times do not pass a sunrise or set' do
+      measurement_1 = Measurement.new(measured_at: Time.parse('7:00'))
+      measurement_2 = Measurement.new(measured_at: Time.parse('8:00'))
+
+      presenter = MeasurementsPresenter.new([measurement_1, measurement_2])
+
+      expect(presenter.sun_rises_sets).to eq([])
+    end
+
+    it 'are a block, when the measurements go from noon-till-noon' do
+      measurement_1 = Measurement.new(measured_at: Time.parse('12:00Z'))
+      measurement_2 = Measurement.new(measured_at: Time.parse('12:00Z') + 1.day)
+
+      presenter = MeasurementsPresenter.new([measurement_1, measurement_2])
+
+      expect(presenter.sun_rises_sets).to eq([[30.65, 67.5]])
+    end
+
+    it 'block starts with zero, when the first sunset is before the first epoch' do
+      measurement_1 = Measurement.new(measured_at: Time.parse('20:00Z'))
+      measurement_2 = Measurement.new(measured_at: Time.parse('12:00Z') + 2.days)
+
+      presenter = MeasurementsPresenter.new([measurement_1, measurement_2])
+
+      expect(presenter.sun_rises_sets).to eq([[0, 20.5], [58.31, 80.57]])
+    end
+
+    it 'block ends with 100, when the last sunrise is after the last epoch' do
+      measurement_1 = Measurement.new(measured_at: Time.parse('12:00Z'))
+      measurement_2 = Measurement.new(measured_at: Time.parse('4:00Z') + 2.day)
+
+      presenter = MeasurementsPresenter.new([measurement_1, measurement_2])
+
+      expect(presenter.sun_rises_sets).to eq([[18.39, 40.5], [78.31, 100]])
+    end
+  end
+
   context 'next-noon-after-epoch' do
     before do
       Timecop.travel(Date.parse('2016-07-28'))

@@ -101,6 +101,27 @@ class MeasurementsPresenter
     marks
   end
 
+  def sun_rises_sets
+    sun_calculator = SunTimes.new
+
+    suntimes = []
+    current_date = @measurements.first.measured_at.to_date
+    end_date = @measurements.last.measured_at.to_date
+    while current_date < end_date
+      time_set  = sun_calculator.set(current_date, 52.668393, 4.830894)
+      time_rise = sun_calculator.rise(current_date + 1.day, 52.668393, 4.830894)
+
+      x_set  = ((time_set.to_i  - epoch_min) * 100.0 / width_range).round(2)
+      x_rise = ((time_rise.to_i - epoch_min) * 100.0 / width_range).round(2)
+      x_set  = 0   if x_set  < 0
+      x_rise = 100 if x_rise > 100
+      suntimes << [x_set, x_rise]
+
+      current_date += 1.day
+    end
+    suntimes
+  end
+
   private
 
     def max_height_for_temperature

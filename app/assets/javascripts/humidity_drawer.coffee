@@ -1,7 +1,7 @@
 class @HumidityDrawer
   HEIGHT = 200
 
-  constructor: (@container, @measurements, @noons, @scales) ->
+  constructor: (@container, @measurements, @noons, @scales, @sunRisesSets) ->
     @canvas    = @container.find('canvas')[0]
     @context   = @canvas.getContext("2d")
 
@@ -15,12 +15,30 @@ class @HumidityDrawer
     @canvas.height  = HEIGHT
 
     @removeLegends()
+    @drawSunRisesSets()
     @drawChart()
     @drawNoons()
     @drawScales()
 
   removeLegends: ->
     @container.find('span').remove()
+
+  drawSunRisesSets: ->
+    @context.lineWidth = 0
+    @context.fillStyle = '#E8E8E8'
+
+    $.each(@sunRisesSets, (idx, sun_rise_set) =>
+      @context.beginPath()
+      x_set  = (@width / 100 * sun_rise_set[0])
+      x_rise = (@width / 100 * sun_rise_set[1])
+      @context.moveTo(x_set,  0)
+      @context.lineTo(x_set,  HEIGHT)
+      @context.lineTo(x_rise, HEIGHT)
+      @context.lineTo(x_rise, 0)
+      @context.closePath()
+
+      @context.fill()
+    )
 
   drawChart: ->
     @context.lineWidth   = 2
