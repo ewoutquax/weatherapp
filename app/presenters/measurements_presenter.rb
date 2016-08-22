@@ -33,7 +33,7 @@ class MeasurementsPresenter
   def humidity_marks
     marks = []
     @measurements.each do |measurement|
-      next if measurement.humidity.blank?
+      next if measurement.humidity.blank? || measurement.humidity > 100
 
       x = (measurement.measured_at.to_i - epoch_min) * 100.0 / width_range
       y = ((measurement.humidity.to_f - min_height_for_humidity) * 95.0 / height_range_for_humidity).round(2) + 5.0
