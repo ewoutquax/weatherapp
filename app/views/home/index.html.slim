@@ -4,15 +4,24 @@
       .well
         h4>
           ' Huidige meting:
-          dl.dl-horizontal.small
-            dt Meting gedaan op:
-            dd= @current_measurement.measured_at.strftime('%d %b %H:%M')
-            dt Temperatuur:
-            dd= raw "#{number_with_precision(@current_measurement.temperature, precision: 1, separator: ',')} &deg;C"
-            dt Luchtdruk:
-            dd= "#{number_with_precision(@current_measurement.pressure / 100.0, precision: 2, separator: ',')} hP"
-            dt Vochtigheidsgraad:
-            dd= "#{number_with_precision(@current_measurement.humidity, precision: 1, separator: ',')} %"
+        .row
+          .col-xs-12.col-md-6
+            dl.dl-horizontal.small
+              dt Meting gedaan op:
+              dd= @current_measurement.measured_at.strftime('%d %b %H:%M')
+              dt Temperatuur:
+              dd= raw "#{number_with_precision(@current_measurement.temperature, precision: 1, separator: ',')} &deg;C"
+              dt Luchtdruk:
+              dd= "#{number_with_precision(@current_measurement.pressure / 100.0, precision: 2, separator: ',')} hP"
+              dt Vochtigheidsgraad:
+              dd= "#{number_with_precision(@current_measurement.humidity, precision: 1, separator: ',')} %"
+
+          .col-xs-12.col-md-6
+            span.wi.wi-sunrise
+            span= @suntimes[0].strftime('%H:%M')
+            br/
+            span.wi.wi-sunset
+            span= @suntimes[1].strftime('%H:%M')
 
       - if @previous_measurement
         .well

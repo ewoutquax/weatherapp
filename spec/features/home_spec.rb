@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.feature "Home", type: :feature do
   before do
+    Timecop.travel(Date.parse('2016-08-02'))
+
     Measurement.create!(
       measured_at: "2016-08-01 18:53:48",
       temperature: "20.9",
@@ -11,10 +13,15 @@ RSpec.feature "Home", type: :feature do
     )
   end
 
+  after do
+    Timecop.return
+  end
+
   scenario 'Show the homepage without current reading' do
     given_i_have_no_current_reading
     when_i_am_on_the_homepage
     then_i_see_a_message_about_no_current_reading
+    and_i_see_the_suntimes
   end
 
   scenario 'Show the homepage with one current reading' do
@@ -89,6 +96,11 @@ RSpec.feature "Home", type: :feature do
 
   def then_i_see_a_message_about_no_current_reading
     expect(page).to have_content('Geen huidige meting aanwezig')
+  end
+
+  def and_i_see_the_suntimes
+    expect(page).to have_content 'Sunrise'
+    expect(page).to have_content 'Sunset'
   end
 
   def then_i_see_the_details_of_the_current_reading
