@@ -27,7 +27,7 @@ RSpec.describe MeasurementsPresenter do
         measurements = temperatures.inject([]) do |collection, temperature|
           collection << Measurement.new(temperature: temperature)
         end
-        max_height = MeasurementsPresenter.new(measurements).send(:max_height_for_temperature)
+        max_height = TemperatureMeasurementsPresenter.new(measurements).send(:max_height)
 
         expect(max_height).to eq(expected_max_height)
       end
@@ -72,14 +72,14 @@ RSpec.describe MeasurementsPresenter do
 
     context 'min height' do
       it 'sets the min-height at multiple of 100 below the lowest pressure' do
-        min_height = MeasurementsPresenter.new([pressure_1, pressure_2]).send(:min_height_for_pressure)
+        min_height = PressureMeasurementsPresenter.new([pressure_1, pressure_2]).send(:min_height)
         expect(min_height).to eq(108000)
       end
     end
 
     context 'max height' do
       it 'sets the max-height at 110% of the pressure-range adding the height-offset' do
-        max_height = MeasurementsPresenter.new([pressure_1, pressure_2]).send(:max_height_for_pressure)
+        max_height = PressureMeasurementsPresenter.new([pressure_1, pressure_2]).send(:max_height)
         expect(max_height).to eq(108220)
       end
     end
@@ -115,14 +115,14 @@ RSpec.describe MeasurementsPresenter do
 
     context 'min height' do
       it 'sets the min-height at multiple of 5 below the lowest pressure' do
-        min_height = MeasurementsPresenter.new([humidity_1, humidity_2]).send(:min_height_for_humidity)
+        min_height = HumidityMeasurementsPresenter.new([humidity_1, humidity_2]).send(:min_height)
         expect(min_height).to eq(50.0)
       end
     end
 
     context 'max height' do
       it 'sets the max-height at 110% of the humidity-range adding the height-offset' do
-        max_height = MeasurementsPresenter.new([humidity_1, humidity_2]).send(:max_height_for_humidity)
+        max_height = HumidityMeasurementsPresenter.new([humidity_1, humidity_2]).send(:max_height)
         expect(max_height).to eq(56.7)
       end
     end
@@ -232,11 +232,11 @@ RSpec.describe MeasurementsPresenter do
 
     it 'block ends with 100, when the last sunrise is after the last epoch' do
       measurement_1 = Measurement.new(measured_at: Time.parse('12:00Z'))
-      measurement_2 = Measurement.new(measured_at: Time.parse('4:00Z') + 2.day)
+      measurement_2 = Measurement.new(measured_at: Time.parse('23:00Z') + 1.day)
 
       presenter = MeasurementsPresenter.new([measurement_1, measurement_2])
 
-      expect(presenter.sun_rises_sets).to eq([[18.39, 40.5], [78.31, 100]])
+      expect(presenter.sun_rises_sets).to eq([[21.02, 46.28], [89.5, 100]])
     end
   end
 
